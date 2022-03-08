@@ -11,6 +11,7 @@
 import CreateCard from '../gql/mutations/CreateCard.gql'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 import { useMutation } from '@vue/apollo-composable'
+import produce from 'immer'
 
 const { mutate: createCard } = useMutation(CreateCard, {
   variables: {
@@ -19,27 +20,24 @@ const { mutate: createCard } = useMutation(CreateCard, {
     order: 1,
     owner_id: 1,
   },
-  refetchQueries: [{ query: BoardQuery, variables: { id: 1 } }],
+  // refetchQueries: [{ query: BoardQuery, variables: { id: 1 } }],
+  // Or
   // add new card to the cached query
-  // update(cache, { data: { createCard } }) {
-  //   // read the cached query
-  //   const data = cache.readQuery({
-  //     query: BoardQuery,
-  //     variables: { id: 1 },
-  //   })
+  update(cache, { data: { createCard } }) {
+    // read the cached query
+    const data = cache.readQuery({
+      query: BoardQuery,
+      variables: { id: 1 },
+    })
 
-  //   // console.log(data.board.lists.find((list) => list.id === '1'))
-  //   // data.board.lists.find((list) => list.id === '1').cards.push(createCard)
-
-  //   const tempData = data.board.lists
-  //   const CardsCopy = tempData.find((list) => list.id === '1').cards.slice()
-  //   CardsCopy.push(createCard)
-
-  //   cache.writeQuery({
-  //     query: BoardQuery,
-  //     data: data,
-  //   })
-  // },
+    cache.writeQuery({
+      query: BoardQuery,
+      data: produce(data, (x) => {
+        // push new card to the list
+        x.board.lists.find((list) => list.id === '1').cards.push(createCard)
+      }),
+    })
+  },
 })
 
 function addCard() {

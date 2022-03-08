@@ -4,6 +4,7 @@
       class="rounded-md shadow-card py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none"
       placeholder="Enter a title for this card..."
       v-model.trim="title"
+      ref="titleRef"
       @keyup.esc="closed"
       @keyup.enter="addCard"
     ></textarea>
@@ -36,11 +37,12 @@ const props = defineProps({
   list: Object,
 });
 
-const title = ref("");
+const title = ref('');
+const titleRef = ref('');
 
 onMounted(() => {
   // adding ref="title" to the textarea doesn't work with v-model.
-  // title.value.focus();
+   titleRef.value.focus();
 });
 
 const { mutate: createCard } = useMutation(CreateCard, () => ({

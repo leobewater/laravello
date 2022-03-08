@@ -28,6 +28,8 @@ type Query {
 ## Mutations
 type Mutation {
   createCard(input: CreateCardInput! @spread): Card! @create
+
+  deleteCard(id: ID!): Card @delete
 }
 
 

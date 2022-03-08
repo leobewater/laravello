@@ -4,8 +4,9 @@
       <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
     </div>
 
-    <Card v-for="card in list.cards" :key="card.id" :card="card" />
-    <CardEditor v-if="editing" @closed="editing = false" />
+    <Card v-for="card in props.list.cards" :key="card.id" :card="card" />
+
+    <CardEditor v-if="editing" @closed="editing = false" :list="props.list" />
     <CardAddButton v-else @click="editing = true" />
   </div>
 </template>
@@ -16,7 +17,7 @@ import CardAddButton from '../components/CardAddButton.vue'
 import CardEditor from '../components/CardEditor.vue'
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   list: Object,
 })
 

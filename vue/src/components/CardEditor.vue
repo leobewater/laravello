@@ -3,7 +3,7 @@
     <textarea
       class="rounded-md shadow-card py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none"
       placeholder="Enter a title for this card..."
-      ref="title"
+      v-model="title"
       @keyup.esc="closed"
       @keyup.enter="addCard"
     ></textarea>
@@ -32,39 +32,52 @@ import { useMutation } from '@vue/apollo-composable'
 import produce from 'immer'
 
 const emit = defineEmits(['closed'])
-
-const title = ref(null)
-
-onMounted(() => {
-  title.value.focus()
+const props = defineProps({
+  list: Object,
 })
 
-const { mutate: createCard } = useMutation(CreateCard, {
+const title = ref('')
+
+onMounted(() => {
+  //  title.value.focus()
+})
+
+
+const { mutate: createCard } = useMutation(CreateCard, () => ({
   variables: {
-    listId: 1,
-    title: 'Test from code',
-    order: 1,
-    owner_id: 1,
+    listId: props.list.id,
+    title: title.value,
+    order: props.list.cards.length + 1,
+    // owner_id: 1,
   },
-  // refetchQueries: [{ query: BoardQuery, variables: { id: 1 } }],
+  // refetchQueries: [
+  //   { query: BoardQuery, variables: { id: props.list.board_id } },
+  // ],
   // Or
-  // add new card to the cached query
-  update(cache, { data: { createCard } }) {
+  // add new card to the cached query without making extra api call
+  update: (cache, { data: { createCard } }) => {
+    console.log(title.value)
+    console.log(props.list.id)
+    console.log(props.list.board_id)
+
     // read the cached query
-    const data = cache.readQuery({
+    const dataResult = cache.readQuery({
       query: BoardQuery,
-      variables: { id: 1 },
+      variables: { id: props.list.board_id },
     })
 
     cache.writeQuery({
       query: BoardQuery,
-      data: produce(data, (x) => {
+      data: produce(dataResult, (x) => {
+        console.log(x)
         // push new card to the list
-        x.board.lists.find((list) => list.id === '1').cards.push(createCard)
+        x.board.lists
+          .find((itemList) => itemList.id === props.list.id)
+          .cards.push(createCard)
       }),
     })
   },
-})
+}))
 
 function addCard() {
   createCard()

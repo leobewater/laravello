@@ -16,7 +16,12 @@
         <span v-else>{{ result.board.title }}</span>
       </div>
       <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="result">
-        <List v-for="list in result.board.lists" :key="list.id" :list="list" />
+        <List
+          v-for="list in result.board.lists"
+          :key="list.id"
+          :list="list"
+          @cardadded="updateQueryCache($event, result)"
+        />
       </div>
     </div>
   </div>
@@ -26,8 +31,27 @@
 import List from '../components/List.vue'
 import { useQuery } from '@vue/apollo-composable'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
+import produce from 'immer'
 
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
+
+function updateQueryCache(event, result) {
+  // read the cached query
+  const data = event.cache.readQuery({
+    query: BoardQuery,
+    variables: { id: parseInt(result.board.id) },
+  })
+
+  event.cache.writeQuery({
+    query: BoardQuery,
+    data: produce(data, (x) => {
+      // push new card to the list
+      x.board.lists
+        .find((itemList) => itemList.id === event.listId)
+        .cards.push(event.data)
+    }),
+  })
+}
 </script>
 
 <style scoped>

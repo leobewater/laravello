@@ -6,7 +6,12 @@
 
     <Card v-for="card in props.list.cards" :key="card.id" :card="card" />
 
-    <CardEditor v-if="editing" @closed="editing = false" :list="props.list" />
+    <CardEditor
+      v-if="editing"
+      @closed="editing = false"
+      :list="props.list"
+      @added="addedCard($event)"
+    />
     <CardAddButton v-else @click="editing = true" />
   </div>
 </template>
@@ -17,11 +22,16 @@ import CardAddButton from '../components/CardAddButton.vue'
 import CardEditor from '../components/CardEditor.vue'
 import { ref } from 'vue'
 
+const emit = defineEmits(['card-added'])
 const props = defineProps({
   list: Object,
 })
 
 const editing = ref(false)
+
+function addedCard(ev) {
+  emit('cardadded', { ...ev, listId: props.list.id })
+}
 </script>
 
 <style scoped>

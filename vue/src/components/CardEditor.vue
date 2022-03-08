@@ -26,24 +26,23 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import CreateCard from "../gql/mutations/CreateCard.gql";
-import BoardQuery from "../gql/queries/BoardWithListsAndCards.gql";
-import { useMutation } from "@vue/apollo-composable";
-import produce from "immer";
+import { onMounted, ref } from 'vue'
+import CreateCard from '../gql/mutations/CreateCard.gql'
+import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
+import { useMutation } from '@vue/apollo-composable'
 
-const emit = defineEmits(["closed"]);
+const emit = defineEmits(['closed', 'added'])
 const props = defineProps({
   list: Object,
-});
+})
 
-const title = ref('');
-const titleRef = ref('');
+const title = ref('')
+const titleRef = ref('')
 
 onMounted(() => {
   // adding ref="title" to the textarea doesn't work with v-model.
-   titleRef.value.focus();
-});
+  titleRef.value.focus()
+})
 
 const { mutate: createCard } = useMutation(CreateCard, () => ({
   variables: {
@@ -58,37 +57,20 @@ const { mutate: createCard } = useMutation(CreateCard, () => ({
   // Or
   // add new card to the cached query without making extra api call
   update: (cache, { data: { createCard } }) => {
-    // console.log(title.value)
-    // console.log(props.list.id)
-    // console.log(props.list.board_id)
-
-    // read the cached query
-    const data = cache.readQuery({
-      query: BoardQuery,
-      variables: { id: parseInt(props.list.board_id) },
-    });
-    console.log(createCard);
-
-    // console.log(data)
-    cache.writeQuery({
-      query: BoardQuery,
-      data: produce(data, (x) => {
-        // console.log(x)
-        // push new card to the list
-        x.board.lists
-          .find((itemList) => itemList.id === props.list.id)
-          .cards.push(createCard);
-      }),
-    });
+    emit('added', {
+      cache,
+      data: createCard,
+    })
+    closed()
   },
-}));
+}))
 
 function addCard() {
-  createCard();
-  closed();
+  createCard()
+  //closed()
 }
 
 function closed() {
-  emit("closed");
+  emit('closed')
 }
 </script>

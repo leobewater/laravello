@@ -27,6 +27,23 @@ const { mutate: deleteCard } = useMutation(DeleteCard, () => ({
   variables: {
     id: props.card.id,
   },
+  // update: (cache, { data: { deleteCard } }) => {
+  //   // read the cached query
+  //   const data = cache.readQuery({
+  //     query: BoardQuery,
+  //     variables: { id: parseInt(props.list.board_id) },
+  //   });
+
+  //   cache.writeQuery({
+  //     query: BoardQuery,
+  //     data: produce(data, (x) => {
+  //       // remove card to the list
+  //       x.board.lists
+  //         .find((itemList) => itemList.id === props.list.id)
+  //         .cards.push(createCard);
+  //     }),
+  //   });
+  // },
 }))
 
 function cardDelete() {

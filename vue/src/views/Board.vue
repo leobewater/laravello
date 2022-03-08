@@ -20,29 +20,11 @@
             <div class="text-gray-800 pl-2 pb-2 font-bold">List title</div>
           </div>
 
-          <div
-            class="bg-white card rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2"
-          >
-            xxx
-          </div>
-
-          <div
-            class="bg-white card rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2"
-          >
-            xxx
-          </div>
-
-          <div
-            class="bg-white card rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2"
-          >
-            xxx
-          </div>
-
-          <div
-            class="bg-white card rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2"
-          >
-            xxx
-          </div>
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          
           <div class="rounded-sm p-2 text-gray-600 cursor-pointer hover:bg-gray-400 hover:text-gray-800 text-sm">Add new card</div>
         </div>
       </div>
@@ -50,7 +32,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Card from '../components/Card.vue'
+</script>
 
 <style scoped>
 .header {
@@ -59,7 +43,5 @@
 .list {
   width: 250px;
 }
-.card {
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-}
+
 </style>

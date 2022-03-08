@@ -16,7 +16,7 @@
         <span v-else>{{ result.board.title }}</span>
       </div>
       <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="result">
-        <List :list="list" v-for="list in result.board.lists" :key="list.id" />
+        <List v-for="list in result.board.lists" :key="list.id" :list="list" />
       </div>
     </div>
   </div>

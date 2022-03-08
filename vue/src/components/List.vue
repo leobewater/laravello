@@ -5,8 +5,8 @@
     </div>
 
     <Card v-for="card in list.cards" :key="card.id" :card="card" />
-    <CardEditor />
-    <CardAddButton />
+    <CardEditor v-if="editing" @closed="editing = false" />
+    <CardAddButton v-else @click="editing = true" />
   </div>
 </template>
 
@@ -14,10 +14,13 @@
 import Card from '../components/Card.vue'
 import CardAddButton from '../components/CardAddButton.vue'
 import CardEditor from '../components/CardEditor.vue'
+import { ref } from 'vue'
 
 defineProps({
   list: Object,
 })
+
+const editing = ref(false)
 </script>
 
 <style scoped>

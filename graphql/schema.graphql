@@ -2,7 +2,7 @@
 scalar DateTime
   @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
-# "Indicates what fields are available at the top level of a query operation."
+## Queries
 type Query {
   # "Find a single user by an identifying attribute."
   user(
@@ -24,6 +24,14 @@ type Query {
   board(id: ID! @eq): Board @find
 }
 
+
+## Mutations
+type Mutation {
+  cardAdd(input: CardAddInput! @spread): Card! @create
+}
+
+
+## Types
 type User {
   id: ID!
   name: String!
@@ -62,4 +70,13 @@ type Card {
   owner: User! @belongsTo
   created_at: DateTime!
   updated_at: DateTime!
+}
+
+
+## Input types
+input CardAddInput {
+  title: String!
+  order: Int!
+  list_id: ID!
+  owner_id: ID!
 }

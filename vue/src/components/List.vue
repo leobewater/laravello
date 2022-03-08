@@ -21,5 +21,6 @@ import CardAddButton from '../components/CardAddButton.vue'
 <style scoped>
 .list {
   width: 250px;
+  min-width: 250px;
 }
 </style>

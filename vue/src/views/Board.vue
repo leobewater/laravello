@@ -15,7 +15,9 @@
         The board title goes here
       </div>
       <div class="flex flex-1 items-start overflow-x-auto mx-2">
-          <List />
+        <List />
+        <List />
+        <List />
       </div>
     </div>
   </div>
@@ -29,5 +31,4 @@ import List from '../components/List.vue'
 .header {
   height: 40px;
 }
-
 </style>

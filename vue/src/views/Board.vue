@@ -15,33 +15,19 @@
         The board title goes here
       </div>
       <div class="flex flex-1 items-start overflow-x-auto mx-2">
-        <div class="bg-gray-300 rounded-sm p-2 mr-2 list">
-          <div class="flex justify-between">
-            <div class="text-gray-800 pl-2 pb-2 font-bold">List title</div>
-          </div>
-
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-
-          <CardAddButton />
-        </div>
+          <List />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import Card from '../components/Card.vue'
-import CardAddButton from '../components/CardAddButton.vue'
+import List from '../components/List.vue'
 </script>
 
 <style scoped>
 .header {
   height: 40px;
 }
-.list {
-  width: 250px;
-}
+
 </style>

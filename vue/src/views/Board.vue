@@ -12,12 +12,11 @@
 
     <div class="h-full flex flex-1 flex-col items-stretch">
       <div class="mx-4 mb-2 text-white font-bold text-lg">
-        The board title goes here
+        <span v-if="loading">Loading</span>
+        <span v-else>{{ result.board.title }}</span>
       </div>
-      <div class="flex flex-1 items-start overflow-x-auto mx-2">
-        <List />
-        <List />
-        <List />
+      <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="result">
+        <List :list="list" v-for="list in result.board.lists" :key="list.id" />
       </div>
     </div>
   </div>
@@ -25,6 +24,27 @@
 
 <script setup>
 import List from '../components/List.vue'
+import gql from 'graphql-tag'
+import { useQuery } from '@vue/apollo-composable'
+
+const BOARD_QUERY = gql`
+  query ($id: ID!) {
+    board(id: $id) {
+      title
+      color
+      lists {
+        id
+        title
+        cards {
+          id
+          title
+          order
+        }
+      }
+    }
+  }
+`
+const { result, loading, error } = useQuery(BOARD_QUERY, { id: 1 })
 </script>
 
 <style scoped>

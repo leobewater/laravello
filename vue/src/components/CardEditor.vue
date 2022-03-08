@@ -42,13 +42,12 @@ onMounted(() => {
   //  title.value.focus()
 })
 
-
 const { mutate: createCard } = useMutation(CreateCard, () => ({
   variables: {
     listId: props.list.id,
     title: title.value,
     order: props.list.cards.length + 1,
-    // owner_id: 1,
+    owner_id: 1,
   },
   // refetchQueries: [
   //   { query: BoardQuery, variables: { id: props.list.board_id } },
@@ -56,20 +55,22 @@ const { mutate: createCard } = useMutation(CreateCard, () => ({
   // Or
   // add new card to the cached query without making extra api call
   update: (cache, { data: { createCard } }) => {
-    console.log(title.value)
-    console.log(props.list.id)
+    // console.log(title.value)
+    // console.log(props.list.id)
     console.log(props.list.board_id)
 
     // read the cached query
-    const dataResult = cache.readQuery({
+    const data = cache.readQuery({
       query: BoardQuery,
-      variables: { id: props.list.board_id },
+      variables: { id: parseInt(props.list.board_id) },
     })
+    console.log(createCard)
 
+    // console.log(data)
     cache.writeQuery({
       query: BoardQuery,
-      data: produce(dataResult, (x) => {
-        console.log(x)
+      data: produce(data, (x) => {
+        // console.log(x)
         // push new card to the list
         x.board.lists
           .find((itemList) => itemList.id === props.list.id)

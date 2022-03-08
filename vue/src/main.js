@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, provide, h } from 'vue'
 import store from './store'
 import router from './router'
 import App from './App.vue'
@@ -12,7 +12,7 @@ import {
 } from '@apollo/client/core'
 
 import { createApolloProvider } from '@vue/apollo-option'
-
+import { DefaultApolloClient } from '@vue/apollo-composable'
 import VueApolloComponents from '@vue/apollo-components'
 
 function getHeaders() {
@@ -31,13 +31,10 @@ const httpLink = createHttpLink({
   headers: getHeaders(),
 })
 
-// Cache implementation
-const cache = new InMemoryCache()
-
 // Create the apollo client
 const apolloClient = new ApolloClient({
   link: httpLink,
-  cache,
+  cache: new InMemoryCache(),
 })
 
 const apolloProvider = createApolloProvider({
@@ -49,7 +46,12 @@ const apolloProvider = createApolloProvider({
   },
 })
 
-createApp(App)
+createApp({
+  setup() {
+    provide(DefaultApolloClient, apolloClient)
+  },
+  render: () => h(App),
+})
   .use(store)
   .use(router)
   .use(apolloProvider)

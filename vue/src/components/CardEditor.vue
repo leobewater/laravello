@@ -57,10 +57,7 @@ const { mutate: createCard } = useMutation(CreateCard, () => ({
   // Or
   // add new card to the cached query without making extra api call
   update: (cache, { data: { createCard } }) => {
-    emit('added', {
-      cache,
-      data: createCard,
-    })
+    emit('added', { cache, data: createCard })
     closed()
   },
 }))

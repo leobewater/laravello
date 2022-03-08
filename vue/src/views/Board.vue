@@ -26,7 +26,7 @@
 import List from '../components/List.vue'
 // import gql from 'graphql-tag'
 import { useQuery } from '@vue/apollo-composable'
-import BoardQuery from '../graphql/BoardWithListsAndCards.gql'
+import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 
 // const BOARD_QUERY = gql`
 // query BoardWithListsAndCards($id: ID!) {

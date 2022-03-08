@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, defineEmits } from "vue";
+import { onMounted, ref } from "vue";
 import CreateCard from "../gql/mutations/CreateCard.gql";
 import BoardQuery from "../gql/queries/BoardWithListsAndCards.gql";
 import { useMutation } from "@vue/apollo-composable";

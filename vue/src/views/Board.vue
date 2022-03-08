@@ -24,7 +24,7 @@
 
 <script setup>
 import List from '../components/List.vue'
-import gql from 'graphql-tag'
+// import gql from 'graphql-tag'
 import { useQuery } from '@vue/apollo-composable'
 import BoardQuery from '../graphql/BoardWithListsAndCards.gql'
 

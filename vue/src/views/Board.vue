@@ -24,27 +24,9 @@
 
 <script setup>
 import List from '../components/List.vue'
-// import gql from 'graphql-tag'
 import { useQuery } from '@vue/apollo-composable'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 
-// const BOARD_QUERY = gql`
-// query BoardWithListsAndCards($id: ID!) {
-//   board(id: $id) {
-//     title
-//     color
-//     lists {
-//       id
-//       title
-//       cards {
-//         id
-//         title
-//         order
-//       }
-//     }
-//   }
-// }
-// `
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
 </script>
 

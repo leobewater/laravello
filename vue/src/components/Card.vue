@@ -4,9 +4,9 @@
   >
     <div>{{ card.title }}</div>
 
-    <div class="flex font-bold opacity-0 group-hover:opacity-100">
-      <div class="">e</div>
-      <div class="">d</div>
+    <div class="flex font-bold opacity-0 group-hover:opacity-100 transition-opacity ease-out duration-500">
+      <div class="text-gray-400 pr-2 hover:text-yellow-700">e</div>
+      <div class="text-gray-400 hover:text-yellow-700">d</div>
     </div>
   </div>
 </template>

@@ -11,6 +11,12 @@ class Board extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'color',
+        'owner_id',
+    ];
+
     // card list relationship
     public function lists(): HasMany
     {

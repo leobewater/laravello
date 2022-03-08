@@ -10,6 +10,13 @@ class Card extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'order',
+        'list_id',
+        'owner_id'
+    ];
+
     // list relationship
     public function list(): BelongsTo
     {

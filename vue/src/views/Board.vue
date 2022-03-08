@@ -24,8 +24,8 @@
           <Card />
           <Card />
           <Card />
-          
-          <div class="rounded-sm p-2 text-gray-600 cursor-pointer hover:bg-gray-400 hover:text-gray-800 text-sm">Add new card</div>
+
+          <CardAddButton />
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@
 
 <script setup>
 import Card from '../components/Card.vue'
+import CardAddButton from '../components/CardAddButton.vue'
 </script>
 
 <style scoped>
@@ -43,5 +44,4 @@ import Card from '../components/Card.vue'
 .list {
   width: 250px;
 }
-
 </style>

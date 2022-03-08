@@ -5,7 +5,7 @@
     </div>
 
     <Card v-for="card in list.cards" :key="card.id" :card="card" />
-
+    <CardEditor />
     <CardAddButton />
   </div>
 </template>
@@ -13,6 +13,7 @@
 <script setup>
 import Card from '../components/Card.vue'
 import CardAddButton from '../components/CardAddButton.vue'
+import CardEditor from '../components/CardEditor.vue'
 
 defineProps({
   list: Object,

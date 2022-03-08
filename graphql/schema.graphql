@@ -27,7 +27,7 @@ type Query {
 
 ## Mutations
 type Mutation {
-  cardAdd(input: CardAddInput! @spread): Card! @create
+  createCard(input: CreateCardInput! @spread): Card! @create
 }
 
 
@@ -74,7 +74,7 @@ type Card {
 
 
 ## Input types
-input CardAddInput {
+input CreateCardInput {
   title: String!
   order: Int!
   list_id: ID!

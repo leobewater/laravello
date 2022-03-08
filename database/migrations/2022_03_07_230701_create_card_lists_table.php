@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('boards', function (Blueprint $table) {
+        Schema::create('card_lists', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->foreignId('board_id')->constrained('boards');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards');
+        Schema::dropIfExists('card_lists');
     }
 };

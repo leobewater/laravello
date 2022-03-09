@@ -9,6 +9,7 @@
       :key="card.id"
       :card="card"
       @deleted="deletedCard($event)"
+      @updated="updatedCard($event)"
     />
 
     <CardAddEditor
@@ -40,6 +41,10 @@ function addedCard(ev) {
 
 function deletedCard(ev) {
   emit('card-deleted', { ...ev, listId: props.list.id })
+}
+
+function updatedCard(ev) {
+  emit('card-updated', { ...ev, listId: props.list.id })
 }
 </script>
 

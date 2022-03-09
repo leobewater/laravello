@@ -19,14 +19,22 @@
       </div>
     </div>
   </div>
-  <CardEditor v-else class="mb-2" label="Save Card" />
+  <CardEditor
+    v-else
+    class="mb-2"
+    v-model="title"
+    label="Save Card"
+    @closed="editing = false"
+    @saved="updateCard"
+  />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useMutation } from '@vue/apollo-composable'
 import DeleteCard from '../gql/mutations/DeleteCard.gql'
-import { EVENT_CARD_DELETED } from '../constants.js'
+import UpdateCard from '../gql/mutations/UpdateCard.gql'
+import { EVENT_CARD_DELETED, EVENT_CARD_UPDATED } from '../constants.js'
 import CardEditor from './CardEditor.vue'
 
 const emit = defineEmits(['deleted'])
@@ -34,6 +42,7 @@ const props = defineProps({
   card: Object,
 })
 
+const title = ref(props.card.title)
 const editing = ref(false)
 
 const { mutate: deleteCard } = useMutation(DeleteCard, () => ({
@@ -42,6 +51,17 @@ const { mutate: deleteCard } = useMutation(DeleteCard, () => ({
   },
   update: (cache, { data: { deleteCard } }) => {
     emit('deleted', { cache, data: deleteCard, type: EVENT_CARD_DELETED })
+  },
+}))
+
+const { mutate: updateCard } = useMutation(UpdateCard, () => ({
+  variables: {
+    id: props.card.id,
+    title: title.value,
+  },
+  update: (cache, { data: { updateCard } }) => {
+    emit('updated', { cache, data: updateCard, type: EVENT_CARD_UPDATED })
+    editing.value = false
   },
 }))
 

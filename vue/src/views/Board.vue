@@ -21,6 +21,7 @@
           :key="list.id"
           :list="list"
           @card-added="updateQueryCache($event, result)"
+          @card-updated="updateQueryCache($event, result)"
           @card-deleted="updateQueryCache($event, result)"
         />
       </div>
@@ -33,7 +34,11 @@ import List from '../components/List.vue'
 import { useQuery } from '@vue/apollo-composable'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 import produce from 'immer'
-import { EVENT_CARD_ADDED, EVENT_CARD_DELETED } from '../constants.js'
+import {
+  EVENT_CARD_ADDED,
+  EVENT_CARD_DELETED,
+  EVENT_CARD_UPDATED,
+} from '../constants.js'
 
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
 
@@ -69,6 +74,15 @@ function updateQueryCache(event, result) {
         // find card index from the cards array
         const cardIdx = listById.findIndex((card) => card.id === event.data.id)
         listById.splice(cardIdx, 1)
+      })
+      break
+
+    case EVENT_CARD_UPDATED:
+      // update card from the list
+      updatedData = produce(data, (x) => {
+        const card = x.board.lists
+          .find((itemList) => itemList.id === event.listId)
+          .cards.filter((card) => card.id === event.data.id).title = event.data.title
       })
       break
   }

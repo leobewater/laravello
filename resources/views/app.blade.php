@@ -10,7 +10,7 @@
 </head>
 
 <body class="h-screen text-gray-800">
-    <div id="app" class="h-full">fsdfs
+    <div id="app" class="h-full">
         <router-view />
     </div>
     <script src="{{ asset('js/app.js') }}"></script>

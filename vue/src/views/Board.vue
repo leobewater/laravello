@@ -46,6 +46,8 @@ function updateQueryCache(event, result) {
 
   let updatedData = data
 
+  // console.log(event.data)
+
   switch (event.type) {
     case EVENT_CARD_ADDED:
       // push new card to the list
@@ -65,7 +67,7 @@ function updateQueryCache(event, result) {
         ).cards
 
         // find card index from the cards array
-        const cardIdx = listById.findIndex((card) => card.id === event.data)
+        const cardIdx = listById.findIndex((card) => card.id === event.data.id)
         listById.splice(cardIdx, 1)
       })
       break

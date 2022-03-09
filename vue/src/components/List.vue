@@ -13,8 +13,8 @@
 
     <CardAddEditor
       v-if="editing"
-      @closed="editing = false"
       :list="props.list"
+      @closed="editing = false"
       @added="addedCard($event)"
     />
     <CardAddButton v-else @click="editing = true" />

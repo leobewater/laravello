@@ -36,7 +36,6 @@ const { mutate: createCard } = useMutation(CreateCard, () => ({
 
 function addCard() {
   createCard()
-  //closed()
 }
 
 function closed() {

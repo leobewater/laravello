@@ -7,7 +7,7 @@
       ref="card"
       @keyup.esc="closed"
       @keyup.enter="saved"
-      @input="updateValue"
+      @input="emit('update:modelValue', $event.target.value)"
     ></textarea>
 
     <div class="flex">
@@ -32,6 +32,7 @@ import { onMounted, ref } from 'vue'
 
 const emit = defineEmits(['closed', 'saved', 'update:modelValue'])
 const card = ref('')
+// has to use "modelValue" when doing two-way binding with parent component/sending input value back to parent component
 const props = defineProps({
   modelValue: String,
 })
@@ -40,10 +41,6 @@ onMounted(() => {
   // adding ref="title" to the textarea doesn't work with v-model.
   card.value.focus()
 })
-
-function updateValue(event) {
-  emit('update:modelValue', event.target.value)
-}
 
 function saved() {
   emit('saved')

@@ -7,20 +7,33 @@ import { createApolloProvider } from '@vue/apollo-option'
 import VueApolloComponents from '@vue/apollo-components'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
-function getHeaders() {
-  const headers = {}
-  const token = localStorage.getItem('apollo-token')
-  if (token) {
-    headers.authorization = `Bearer ${token}`
-  }
+// function getHeaders() {
+//   const headers = {}
+//   const token = localStorage.getItem('apollo-token')
+//   if (token) {
+//     headers.authorization = `Bearer ${token}`
+//   }
 
-  return headers
-}
+//   return headers
+// }
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
   uri: 'https://laravello.test/graphql',
-  headers: getHeaders(),
+  // headers: getHeaders(),
+  headers: {
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+  },
+  credentials: 'include',
+  // onError: (err) => {
+  //   try {
+  //     gqlErrors(err)
+  //   } catch (err) {
+  //     if (err instanceof AuthError) {
+  //       store.dispatch('logout')
+  //     }
+  //   }
+  // },
 })
 
 // Create the apollo client
@@ -39,7 +52,7 @@ export const apolloProvider = createApolloProvider({
 })
 
 export const defaultApolloClient = DefaultApolloClient
-
+export const vueApolloComponents = VueApolloComponents
 
 // Vue.use(VueApollo);
 

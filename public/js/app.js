@@ -22206,7 +22206,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "apolloClient": () => (/* binding */ apolloClient),
 /* harmony export */   "apolloProvider": () => (/* binding */ apolloProvider),
-/* harmony export */   "defaultApolloClient": () => (/* binding */ defaultApolloClient)
+/* harmony export */   "defaultApolloClient": () => (/* binding */ defaultApolloClient),
+/* harmony export */   "vueApolloComponents": () => (/* binding */ vueApolloComponents)
 /* harmony export */ });
 /* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/link/http/createHttpLink.js");
 /* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/core/ApolloClient.js");
@@ -22217,23 +22218,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-function getHeaders() {
-  var headers = {};
-  var token = localStorage.getItem('apollo-token');
-
-  if (token) {
-    headers.authorization = "Bearer ".concat(token);
-  }
-
-  return headers;
-} // HTTP connection to the API
-
+ // function getHeaders() {
+//   const headers = {}
+//   const token = localStorage.getItem('apollo-token')
+//   if (token) {
+//     headers.authorization = `Bearer ${token}`
+//   }
+//   return headers
+// }
+// HTTP connection to the API
 
 var httpLink = (0,_apollo_client_core__WEBPACK_IMPORTED_MODULE_3__.createHttpLink)({
   uri: 'https://laravello.test/graphql',
-  headers: getHeaders()
+  // headers: getHeaders(),
+  headers: {
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+  },
+  credentials: 'include' // onError: (err) => {
+  //   try {
+  //     gqlErrors(err)
+  //   } catch (err) {
+  //     if (err instanceof AuthError) {
+  //       store.dispatch('logout')
+  //     }
+  //   }
+  // },
+
 }); // Create the apollo client
 
 var apolloClient = new _apollo_client_core__WEBPACK_IMPORTED_MODULE_4__.ApolloClient({
@@ -22248,7 +22258,8 @@ var apolloProvider = (0,_vue_apollo_option__WEBPACK_IMPORTED_MODULE_0__.createAp
     }
   }
 });
-var defaultApolloClient = _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_2__.DefaultApolloClient; // Vue.use(VueApollo);
+var defaultApolloClient = _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_2__.DefaultApolloClient;
+var vueApolloComponents = _vue_apollo_components__WEBPACK_IMPORTED_MODULE_1__["default"]; // Vue.use(VueApollo);
 // const apolloClient = new ApolloClient({
 //   uri: 'https://laravello.test/graphql',
 //   headers: {
@@ -22297,8 +22308,7 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)({
   setup: function setup() {
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.provide)(_apollo_config__WEBPACK_IMPORTED_MODULE_3__.defaultApolloClient, _apollo_config__WEBPACK_IMPORTED_MODULE_3__.apolloClient);
   }
-}).use(_store__WEBPACK_IMPORTED_MODULE_1__["default"]).use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]).use(_apollo_config__WEBPACK_IMPORTED_MODULE_3__.apolloProvider) //.use(VueApolloComponents)
-.mount('#app'); // const app = new Vue({
+}).use(_store__WEBPACK_IMPORTED_MODULE_1__["default"]).use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]).use(_apollo_config__WEBPACK_IMPORTED_MODULE_3__.apolloProvider).use(_apollo_config__WEBPACK_IMPORTED_MODULE_3__.vueApolloComponents).mount('#app'); // const app = new Vue({
 //     el: '#app'
 // });
 // const app = createApp({})

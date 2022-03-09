@@ -1,7 +1,12 @@
 import { createApp, provide, h } from 'vue'
 import store from './store'
 import router from './router'
-import {apolloProvider, apolloClient, defaultApolloClient} from './apollo.config'
+import {
+  apolloProvider,
+  apolloClient,
+  defaultApolloClient,
+  vueApolloComponents,
+} from './apollo.config'
 import './bootstrap'
 
 // window.Vue = require('vue').default
@@ -16,7 +21,7 @@ const app = createApp({
   .use(store)
   .use(router)
   .use(apolloProvider)
-  //.use(VueApolloComponents)
+  .use(vueApolloComponents)
   .mount('#app')
 
 // const app = new Vue({

@@ -58,8 +58,8 @@ return [
     | Falls back to the Laravel default if the defined guard is either `null` or not found.
     |
     */
-
-    'guard' => 'api',
+    //'guard' => 'api',
+    'guard' => 'sanctum',
 
     /*
     |--------------------------------------------------------------------------

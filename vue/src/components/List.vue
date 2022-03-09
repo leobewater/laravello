@@ -4,7 +4,12 @@
       <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
     </div>
 
-    <Card v-for="card in props.list.cards" :key="card.id" :card="card" />
+    <Card
+      v-for="card in props.list.cards"
+      :key="card.id"
+      :card="card"
+      @deleted="deletedCard($event)"
+    />
 
     <CardEditor
       v-if="editing"
@@ -22,7 +27,7 @@ import CardAddButton from '../components/CardAddButton.vue'
 import CardEditor from '../components/CardEditor.vue'
 import { ref } from 'vue'
 
-const emit = defineEmits(['card-added'])
+const emit = defineEmits(['card-added', 'card-deleted'])
 const props = defineProps({
   list: Object,
 })
@@ -30,7 +35,11 @@ const props = defineProps({
 const editing = ref(false)
 
 function addedCard(ev) {
-  emit('cardadded', { ...ev, listId: props.list.id })
+  emit('card-added', { ...ev, listId: props.list.id })
+}
+
+function deletedCard(ev) {
+  emit('card-deleted', { ...ev, listId: props.list.id })
 }
 </script>
 

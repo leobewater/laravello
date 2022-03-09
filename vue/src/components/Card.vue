@@ -18,7 +18,9 @@
 <script setup>
 import { useMutation } from '@vue/apollo-composable'
 import DeleteCard from '../gql/mutations/DeleteCard.gql'
+import { EVENT_CARD_DELETED } from '../constants.js'
 
+const emit = defineEmits(['deleted'])
 const props = defineProps({
   card: Object,
 })
@@ -27,27 +29,12 @@ const { mutate: deleteCard } = useMutation(DeleteCard, () => ({
   variables: {
     id: props.card.id,
   },
-  // update: (cache, { data: { deleteCard } }) => {
-  //   // read the cached query
-  //   const data = cache.readQuery({
-  //     query: BoardQuery,
-  //     variables: { id: parseInt(props.list.board_id) },
-  //   });
-
-  //   cache.writeQuery({
-  //     query: BoardQuery,
-  //     data: produce(data, (x) => {
-  //       // remove card to the list
-  //       x.board.lists
-  //         .find((itemList) => itemList.id === props.list.id)
-  //         .cards.push(createCard);
-  //     }),
-  //   });
-  // },
+  update: (cache, { data: { deleteCard } }) => {
+    emit('deleted', { cache, data: deleteCard, type: EVENT_CARD_DELETED })
+  },
 }))
 
 function cardDelete() {
-  // console.log(props.card.id)
   deleteCard()
 }
 </script>

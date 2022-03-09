@@ -7,7 +7,7 @@
 
       <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
         <div class="w-full text-center text-gray-600 font-bold mb-8">
-          Log in to Laravello
+          Sign in to Laravello
         </div>
 
         <form @submit.prevent="authenticate">
@@ -34,7 +34,7 @@
               type="submit"
               class="rounded-sm px-4 py-2 text-sam bg-green-500 font-bold outline-none focus:outline-none hover:bg-opacity-75 w-full text-white disabled:opacity-25"
             >
-              Login
+              Sign In
             </button>
           </div>
         </form>

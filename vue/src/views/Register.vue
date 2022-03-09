@@ -43,7 +43,7 @@
               type="submit"
               class="rounded-sm px-4 py-2 text-sam bg-green-500 font-bold outline-none focus:outline-none hover:bg-opacity-75 w-full text-white disabled:opacity-25"
             >
-              Register
+              Sign Up
             </button>
           </div>
         </form>
@@ -54,7 +54,7 @@
           <router-link
             :to="{ name: 'login' }"
             class="text-blue-600 hover:underline"
-            >Already have an account? Log in</router-link
+            >Already have an account? Sign in</router-link
           >
         </div>
       </div>

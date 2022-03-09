@@ -55,11 +55,22 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useMutation } from '@vue/apollo-composable'
+import Login from '../gql/mutations/Login.gql'
 
 const email = ref('')
 const password = ref('')
 
-function authenticate(event) {}
+const { mutate: login } = useMutation(Login, () => ({
+  variables: {
+    email: email.value,
+    password: password.value,
+  },
+}))
+
+const authenticate = function (event) {
+  login()
+}
 </script>
 
 <style scoped>

@@ -12,10 +12,10 @@
         class="text-gray-400 pr-2 hover:text-yellow-700"
         @click="editing = true"
       >
-        e
+        E
       </div>
       <div class="text-gray-400 hover:text-yellow-700" @click="cardDelete">
-        d
+        D
       </div>
     </div>
   </div>

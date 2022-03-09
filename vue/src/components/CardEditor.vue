@@ -30,6 +30,7 @@ import { onMounted, ref } from 'vue'
 import CreateCard from '../gql/mutations/CreateCard.gql'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 import { useMutation } from '@vue/apollo-composable'
+import { EVENT_CARD_ADDED } from '../constants.js'
 
 const emit = defineEmits(['closed', 'added'])
 const props = defineProps({
@@ -57,7 +58,7 @@ const { mutate: createCard } = useMutation(CreateCard, () => ({
   // Or
   // add new card to the cached query without making extra api call
   update: (cache, { data: { createCard } }) => {
-    emit('added', { cache, data: createCard })
+    emit('added', { cache, data: createCard, type: EVENT_CARD_ADDED })
     closed()
   },
 }))

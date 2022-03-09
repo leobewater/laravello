@@ -11,7 +11,7 @@
       @deleted="deletedCard($event)"
     />
 
-    <CardEditor
+    <CardAddEditor
       v-if="editing"
       @closed="editing = false"
       :list="props.list"
@@ -24,7 +24,7 @@
 <script setup>
 import Card from '../components/Card.vue'
 import CardAddButton from '../components/CardAddButton.vue'
-import CardEditor from '../components/CardEditor.vue'
+import CardAddEditor from '../components/CardAddEditor.vue'
 import { ref } from 'vue'
 
 const emit = defineEmits(['card-added', 'card-deleted'])

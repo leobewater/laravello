@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ['./index.html', './resources/js/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
       boxShadow: {

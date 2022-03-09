@@ -1,3 +1,1 @@
-cd to vue folder and run npm run dev
-
-laravel is using valet
+This project is using Laravel, Sanctum, GraphQL, Lighthouse and Vue 3.2

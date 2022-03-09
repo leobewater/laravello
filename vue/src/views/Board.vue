@@ -20,7 +20,8 @@
           v-for="list in result.board.lists"
           :key="list.id"
           :list="list"
-          @cardadded="updateQueryCache($event, result)"
+          @card-added="updateQueryCache($event, result)"
+          @card-deleted="updateQueryCache($event, result)"
         />
       </div>
     </div>
@@ -32,6 +33,7 @@ import List from '../components/List.vue'
 import { useQuery } from '@vue/apollo-composable'
 import BoardQuery from '../gql/queries/BoardWithListsAndCards.gql'
 import produce from 'immer'
+import { EVENT_CARD_ADDED, EVENT_CARD_DELETED } from '../constants.js'
 
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
 
@@ -42,14 +44,36 @@ function updateQueryCache(event, result) {
     variables: { id: parseInt(result.board.id) },
   })
 
+  let updatedData = data
+
+  switch (event.type) {
+    case EVENT_CARD_ADDED:
+      // push new card to the list
+      updatedData = produce(data, (x) => {
+        x.board.lists
+          .find((itemList) => itemList.id === event.listId)
+          .cards.push(event.data)
+      })
+      break
+
+    case EVENT_CARD_DELETED:
+      // remove card from the list
+      updatedData = produce(data, (x) => {
+        // get cards from selcted list
+        const listById = x.board.lists.find(
+          (itemList) => itemList.id === event.listId
+        ).cards
+
+        // find card index from the cards array
+        const cardIdx = listById.findIndex((card) => card.id === event.data)
+        listById.splice(cardIdx, 1)
+      })
+      break
+  }
+
   event.cache.writeQuery({
     query: BoardQuery,
-    data: produce(data, (x) => {
-      // push new card to the list
-      x.board.lists
-        .find((itemList) => itemList.id === event.listId)
-        .cards.push(event.data)
-    }),
+    data: updatedData,
   })
 }
 </script>

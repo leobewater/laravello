@@ -6,12 +6,7 @@
       </div>
 
       <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-        <div
-          v-if="errors"
-          class="p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
-        >
-          {{ errors }}
-        </div>
+        <Errors :errors ="error" />
 
         <div class="w-full text-center text-gray-600 font-bold mb-8">
           Sign up an account
@@ -74,6 +69,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import Register from '../gql/mutations/Register.gql'
+import Errors from '../components/Errors.vue'
 
 const router = useRouter()
 const email = ref('')
@@ -81,8 +77,8 @@ const fullname = ref('')
 const password = ref('')
 
 const {
-  loading: loading,
-  error: errors,
+  loading,
+  error,
   mutate: register,
   onDone,
 } = useMutation(Register, () => ({

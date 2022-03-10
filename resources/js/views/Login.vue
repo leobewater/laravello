@@ -6,13 +6,7 @@
       </div>
 
       <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-        
-        <div
-          v-if="errors"
-          class="p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
-        >
-          {{ errors }}
-        </div>
+        <Errors :errors ="error" />
 
         <div class="w-full text-center text-gray-600 font-bold mb-8">
           Sign in to Laravello
@@ -63,23 +57,31 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import Login from '../gql/mutations/Login.gql'
 import { gqlErrors } from '../utils'
+import Errors from '../components/Errors.vue'
 
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 
 const {
-  loading: loading,
-  error: errors,
+  loading,
+  error,
   mutate: login,
+  onDone
 } = useMutation(Login, () => ({
   variables: {
     email: email.value,
     password: password.value,
   },
 }))
+
+onDone((result) => {
+  router.push({ name: 'board' })
+})
 
 const authenticate = function (event) {
   login()

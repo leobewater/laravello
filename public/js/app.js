@@ -3222,6 +3222,116 @@ function createApolloProvider(options) {
 
 /***/ }),
 
+/***/ "./node_modules/@vue/apollo-util/dist/errorLog.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@vue/apollo-util/dist/errorLog.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.logErrorMessages = exports.getErrorMessages = void 0;
+var printer_1 = __webpack_require__(/*! graphql/language/printer */ "./node_modules/graphql/language/printer.mjs");
+function getErrorMessages(error) {
+    var messages = [];
+    var graphQLErrors = error.graphQLErrors, networkError = error.networkError;
+    var operation = 'operation' in error ? error.operation : undefined;
+    var stack = 'stack' in error ? error.stack : undefined;
+    var printedQuery;
+    if (operation) {
+        printedQuery = (0, printer_1.print)(operation.query);
+    }
+    if (graphQLErrors) {
+        graphQLErrors.forEach(function (_a) {
+            var message = _a.message, locations = _a.locations;
+            messages.push("[GraphQL error] ".concat(message));
+            if (operation) {
+                messages.push(logOperation(printedQuery, locations));
+                if (Object.keys(operation.variables).length) {
+                    messages.push("with variables: ".concat(JSON.stringify(operation.variables, null, 2)));
+                }
+            }
+        });
+    }
+    if (networkError)
+        messages.push("[Network error] ".concat(networkError));
+    if (stack)
+        messages.push(stack);
+    return messages;
+}
+exports.getErrorMessages = getErrorMessages;
+function logErrorMessages(error, printStack) {
+    if (printStack === void 0) { printStack = true; }
+    getErrorMessages(error).forEach(function (message) {
+        var result = /\[([\w ]*)](.*)/.exec(message);
+        if (result) {
+            var tag = result[1], msg = result[2];
+            console.log("%c".concat(tag), 'color:white;border-radius:3px;background:#ff4400;font-weight:bold;padding:2px 6px;', msg);
+        }
+        else {
+            console.log(message);
+        }
+    });
+    if (printStack) {
+        var stack = new Error().stack;
+        if (stack == null)
+            return;
+        var newLineIndex = stack.indexOf('\n');
+        stack = stack.substr(stack.indexOf('\n', newLineIndex + 1));
+        console.log("%c".concat(stack), 'color:grey;');
+    }
+}
+exports.logErrorMessages = logErrorMessages;
+function logOperation(printedQuery, locations) {
+    var lines = printedQuery.split('\n');
+    var l = lines.length;
+    var result = lines.slice();
+    var lineMap = {};
+    for (var i = 0; i < l; i++) {
+        lineMap[i] = i;
+    }
+    if (locations) {
+        for (var _i = 0, locations_1 = locations; _i < locations_1.length; _i++) {
+            var _a = locations_1[_i], line = _a.line, column = _a.column;
+            var index = lineMap[line];
+            result.splice(index, 0, '▲'.padStart(column, ' '));
+            // Offset remaining lines
+            for (var i = index + 1; i < l; i++) {
+                lineMap[i]++;
+            }
+        }
+    }
+    return result.join('\n');
+}
+//# sourceMappingURL=errorLog.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@vue/apollo-util/dist/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@vue/apollo-util/dist/index.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./errorLog */ "./node_modules/@vue/apollo-util/dist/errorLog.js"), exports);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@vue/compiler-core/dist/compiler-core.esm-bundler.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@vue/compiler-core/dist/compiler-core.esm-bundler.js ***!
@@ -21591,6 +21701,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/apollo-composable */ "./node_modules/@vue/apollo-composable/dist/index.esm.js");
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/mutations/Login.gql */ "./resources/js/gql/mutations/Login.gql");
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.js");
+
 
 
 
@@ -21609,6 +21721,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
     }),
+        loading = _useMutation.loading,
+        errors = _useMutation.error,
         login = _useMutation.mutate;
 
     var authenticate = function authenticate(event) {
@@ -21618,11 +21732,14 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       email: email,
       password: password,
+      loading: loading,
+      errors: errors,
       login: login,
       authenticate: authenticate,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       useMutation: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation,
-      Login: (_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default())
+      Login: (_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default()),
+      gqlErrors: _utils__WEBPACK_IMPORTED_MODULE_3__.gqlErrors
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -21999,8 +22116,12 @@ var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_4 = {
   "class": "w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12"
 };
+var _hoisted_5 = {
+  key: 0,
+  "class": "p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
+};
 
-var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "w-full text-center text-gray-600 font-bold mb-8"
   }, " Sign in to Laravello ", -1
@@ -22008,15 +22129,15 @@ var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_6 = ["onSubmit"];
-var _hoisted_7 = {
-  "class": "w-full mb-4"
-};
+var _hoisted_7 = ["onSubmit"];
 var _hoisted_8 = {
   "class": "w-full mb-4"
 };
+var _hoisted_9 = {
+  "class": "w-full mb-4"
+};
 
-var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "w-full mb-6"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
@@ -22027,7 +22148,7 @@ var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "bg-gray-400 h-px w-full mb-6"
   }, null, -1
@@ -22035,18 +22156,20 @@ var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_11 = {
+var _hoisted_12 = {
   "class": "text-center text-sm"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Sign up for an account");
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Sign up for an account");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.errors), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.authenticate, ["prevent"])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "rounded-sm px-4 py-2 outline-none focus:outline-none border-gray-400 bg-gray-100 border-solid border-2 w-full text-sm",
     placeholder: "Enter email",
@@ -22055,7 +22178,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.email]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.email]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     "class": "rounded-sm px-4 py-2 outline-none focus:outline-none border-gray-400 bg-gray-100 border-solid border-2 w-full text-sm",
     placeholder: "Enter password",
@@ -22064,16 +22187,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.password]])]), _hoisted_9], 40
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.password]])]), _hoisted_10], 40
   /* PROPS, HYDRATE_EVENTS */
-  , _hoisted_6), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , _hoisted_7), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'register'
     },
     "class": "text-blue-600 hover:underline"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_12];
+      return [_hoisted_13];
     }),
     _: 1
     /* STABLE */
@@ -22229,16 +22352,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "defaultApolloClient": () => (/* binding */ defaultApolloClient),
 /* harmony export */   "vueApolloComponents": () => (/* binding */ vueApolloComponents)
 /* harmony export */ });
-/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/link/http/createHttpLink.js");
-/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/core/ApolloClient.js");
-/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/cache/inmemory/inMemoryCache.js");
+/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/link/http/createHttpLink.js");
+/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/core/ApolloClient.js");
+/* harmony import */ var _apollo_client_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/client/core */ "./node_modules/@apollo/client/cache/inmemory/inMemoryCache.js");
+/* harmony import */ var _apollo_client_link_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/client/link/error */ "./node_modules/@apollo/client/link/error/index.js");
 /* harmony import */ var _vue_apollo_option__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @vue/apollo-option */ "./node_modules/@vue/apollo-option/dist/vue-apollo-option.esm.js");
 /* harmony import */ var _vue_apollo_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/apollo-components */ "./node_modules/@vue/apollo-components/dist/vue-apollo-components.esm.js");
 /* harmony import */ var _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @vue/apollo-composable */ "./node_modules/@vue/apollo-composable/dist/index.esm.js");
+/* harmony import */ var _vue_apollo_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @vue/apollo-util */ "./node_modules/@vue/apollo-util/dist/index.js");
+/* harmony import */ var _vue_apollo_util__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_vue_apollo_util__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
- // function getHeaders() {
+
+
+ // Handle errors
+// const errorLink = onError((error) => {
+//   if (process.env.NODE_ENV !== 'production') {
+//     console.log("global error", error)
+//     logErrorMessages(error)
+//   }
+// })
+// function getHeaders() {
 //   const headers = {}
 //   const token = localStorage.getItem('apollo-token')
 //   if (token) {
@@ -22246,29 +22381,37 @@ __webpack_require__.r(__webpack_exports__);
 //   }
 //   return headers
 // }
-// HTTP connection to the API
 
-var httpLink = (0,_apollo_client_core__WEBPACK_IMPORTED_MODULE_3__.createHttpLink)({
+var errorLink = (0,_apollo_client_link_error__WEBPACK_IMPORTED_MODULE_4__.onError)(function (_ref) {
+  var graphQLErrors = _ref.graphQLErrors,
+      networkError = _ref.networkError;
+
+  if (graphQLErrors) {
+    graphQLErrors.map(function (_ref2) {
+      var message = _ref2.message,
+          locations = _ref2.locations,
+          path = _ref2.path;
+      return console.log("[GraphQL error]: Message: ".concat(message, ", Location: ").concat(locations, ", Path: ").concat(path));
+    }); // if (graphQLErrors instanceof AuthError) {
+    //   store.dispatch('logout')
+    // }
+  }
+
+  if (networkError) console.log("[Network error]: ".concat(networkError));
+}); // HTTP connection to the API
+
+var httpLink = (0,_apollo_client_core__WEBPACK_IMPORTED_MODULE_5__.createHttpLink)({
   uri: 'https://laravello.test/graphql',
   // headers: getHeaders(),
   headers: {
     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
   },
-  credentials: 'include' // onError: (err) => {
-  //   try {
-  //     gqlErrors(err)
-  //   } catch (err) {
-  //     if (err instanceof AuthError) {
-  //       store.dispatch('logout')
-  //     }
-  //   }
-  // },
-
+  credentials: 'include'
 }); // Create the apollo client
 
-var apolloClient = new _apollo_client_core__WEBPACK_IMPORTED_MODULE_4__.ApolloClient({
-  link: httpLink,
-  cache: new _apollo_client_core__WEBPACK_IMPORTED_MODULE_5__.InMemoryCache()
+var apolloClient = new _apollo_client_core__WEBPACK_IMPORTED_MODULE_6__.ApolloClient({
+  link: errorLink.concat(httpLink),
+  cache: new _apollo_client_core__WEBPACK_IMPORTED_MODULE_7__.InMemoryCache()
 });
 var apolloProvider = (0,_vue_apollo_option__WEBPACK_IMPORTED_MODULE_0__.createApolloProvider)({
   defaultClient: apolloClient,
@@ -22279,26 +22422,7 @@ var apolloProvider = (0,_vue_apollo_option__WEBPACK_IMPORTED_MODULE_0__.createAp
   }
 });
 var defaultApolloClient = _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_2__.DefaultApolloClient;
-var vueApolloComponents = _vue_apollo_components__WEBPACK_IMPORTED_MODULE_1__["default"]; // Vue.use(VueApollo);
-// const apolloClient = new ApolloClient({
-//   uri: 'https://laravello.test/graphql',
-//   headers: {
-//     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-//   },
-//   credentials: 'include',
-//   onError: (err) => {
-//     try {
-//       gqlErrors(err);
-//     } catch (err) {
-//       if (err instanceof AuthError) {
-//         store.dispatch("logout");
-//       }
-//     }
-//   }
-// });
-// export default new VueApollo({
-//   defaultClient: apolloClient
-// });
+var vueApolloComponents = _vue_apollo_components__WEBPACK_IMPORTED_MODULE_1__["default"];
 
 /***/ }),
 
@@ -22439,6 +22563,44 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_0__.createStore)({
   modules: {}
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+/***/ }),
+
+/***/ "./resources/js/utils.js":
+/*!*******************************!*\
+  !*** ./resources/js/utils.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "gqlErrors": () => (/* binding */ gqlErrors)
+/* harmony export */ });
+function gqlErrors(err) {
+  var hasInternal = function hasInternal(errors) {
+    return errors.some(function (e) {
+      return e.internal;
+    });
+  };
+
+  var replaceInternal = function replaceInternal(errors, err) {
+    return hasInternal(errors) ? errors.filter(function (e) {
+      return !e.internal;
+    }).concat(err) : errors;
+  };
+
+  return replaceInternal(((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
+    var _error$path;
+
+    return {
+      message: error.message,
+      internal: Boolean(!(error !== null && error !== void 0 && (_error$path = error.path) !== null && _error$path !== void 0 && _error$path.length))
+    };
+  }), {
+    message: 'Something bad happened'
+  });
+}
 
 /***/ }),
 
@@ -53007,6 +53169,107 @@ __webpack_require__.r(__webpack_exports__);
 
 var execute = _ApolloLink_js__WEBPACK_IMPORTED_MODULE_0__.ApolloLink.execute;
 //# sourceMappingURL=execute.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@apollo/client/link/error/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@apollo/client/link/error/index.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorLink": () => (/* binding */ ErrorLink),
+/* harmony export */   "onError": () => (/* binding */ onError)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/zen-observable-ts/module.js");
+/* harmony import */ var _core_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/index.js */ "./node_modules/@apollo/client/link/core/ApolloLink.js");
+
+
+
+function onError(errorHandler) {
+    return new _core_index_js__WEBPACK_IMPORTED_MODULE_0__.ApolloLink(function (operation, forward) {
+        return new _utilities_index_js__WEBPACK_IMPORTED_MODULE_1__.Observable(function (observer) {
+            var sub;
+            var retriedSub;
+            var retriedResult;
+            try {
+                sub = forward(operation).subscribe({
+                    next: function (result) {
+                        if (result.errors) {
+                            retriedResult = errorHandler({
+                                graphQLErrors: result.errors,
+                                response: result,
+                                operation: operation,
+                                forward: forward,
+                            });
+                            if (retriedResult) {
+                                retriedSub = retriedResult.subscribe({
+                                    next: observer.next.bind(observer),
+                                    error: observer.error.bind(observer),
+                                    complete: observer.complete.bind(observer),
+                                });
+                                return;
+                            }
+                        }
+                        observer.next(result);
+                    },
+                    error: function (networkError) {
+                        retriedResult = errorHandler({
+                            operation: operation,
+                            networkError: networkError,
+                            graphQLErrors: networkError &&
+                                networkError.result &&
+                                networkError.result.errors,
+                            forward: forward,
+                        });
+                        if (retriedResult) {
+                            retriedSub = retriedResult.subscribe({
+                                next: observer.next.bind(observer),
+                                error: observer.error.bind(observer),
+                                complete: observer.complete.bind(observer),
+                            });
+                            return;
+                        }
+                        observer.error(networkError);
+                    },
+                    complete: function () {
+                        if (!retriedResult) {
+                            observer.complete.bind(observer)();
+                        }
+                    },
+                });
+            }
+            catch (e) {
+                errorHandler({ networkError: e, operation: operation, forward: forward });
+                observer.error(e);
+            }
+            return function () {
+                if (sub)
+                    sub.unsubscribe();
+                if (retriedSub)
+                    sub.unsubscribe();
+            };
+        });
+    });
+}
+var ErrorLink = (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__extends)(ErrorLink, _super);
+    function ErrorLink(errorHandler) {
+        var _this = _super.call(this) || this;
+        _this.link = onError(errorHandler);
+        return _this;
+    }
+    ErrorLink.prototype.request = function (operation, forward) {
+        return this.link.request(operation, forward);
+    };
+    return ErrorLink;
+}(_core_index_js__WEBPACK_IMPORTED_MODULE_0__.ApolloLink));
+
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 

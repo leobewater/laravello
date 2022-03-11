@@ -60,7 +60,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import Login from '../gql/mutations/Login.gql'
-import { gqlErrors } from '../utils'
 import Errors from '../components/Errors.vue'
 
 const router = useRouter()

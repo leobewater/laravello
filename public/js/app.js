@@ -21510,16 +21510,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    errors: String
+    errors: Object
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
     var props = __props;
     var __returned__ = {
-      props: props
+      props: props,
+      gqlErrors: _utils__WEBPACK_IMPORTED_MODULE_0__.gqlErrors
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -21730,13 +21733,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
 /* harmony import */ var _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/apollo-composable */ "./node_modules/@vue/apollo-composable/dist/index.esm.js");
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/mutations/Login.gql */ "./resources/js/gql/mutations/Login.gql");
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.js");
-/* harmony import */ var _components_Errors_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Errors.vue */ "./resources/js/components/Errors.vue");
-
+/* harmony import */ var _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Errors.vue */ "./resources/js/components/Errors.vue");
 
 
 
@@ -21746,7 +21747,7 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
-    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_5__.useRouter)();
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter)();
     var email = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var password = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
 
@@ -21783,11 +21784,10 @@ __webpack_require__.r(__webpack_exports__);
       onDone: onDone,
       authenticate: authenticate,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
-      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_5__.useRouter,
+      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter,
       useMutation: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation,
       Login: (_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default()),
-      gqlErrors: _utils__WEBPACK_IMPORTED_MODULE_3__.gqlErrors,
-      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -22043,9 +22043,15 @@ var _hoisted_1 = {
   "class": "p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return $setup.props.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.errors), 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  return $setup.props.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.gqlErrors($setup.props.errors), function (error, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: index
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(error.message), 1
+    /* TEXT */
+    );
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -22693,7 +22699,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "gqlErrors": () => (/* binding */ gqlErrors)
 /* harmony export */ });
-function gqlErrors(err) {
+var gqlErrors = function gqlErrors(err) {
+  // check if error is internal or not
   var hasInternal = function hasInternal(errors) {
     return errors.some(function (e) {
       return e.internal;
@@ -22707,7 +22714,23 @@ function gqlErrors(err) {
   };
 
   return replaceInternal(((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
-    var _error$path;
+    var _error$extensions, _error$path;
+
+    // get validation key from graphql error
+    if ('validation' === ((_error$extensions = error.extensions) === null || _error$extensions === void 0 ? void 0 : _error$extensions.category)) {
+      var _error$extensions2;
+
+      var validationErr = ((_error$extensions2 = error.extensions) === null || _error$extensions2 === void 0 ? void 0 : _error$extensions2.validation) || {}; // get all error messages and flatten them then convert to object
+
+      return Object.keys(validationErr).map(function (key) {
+        return validationErr[key];
+      }).flat().map(function (v) {
+        return {
+          message: v,
+          internal: false
+        };
+      });
+    }
 
     return {
       message: error.message,
@@ -22715,8 +22738,8 @@ function gqlErrors(err) {
     };
   }), {
     message: 'Something bad happened'
-  });
-}
+  }).flat();
+};
 
 /***/ }),
 

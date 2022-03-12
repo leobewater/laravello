@@ -12,8 +12,10 @@
           <button class="header-btn">Logout</button>
         </div>
         <div v-else>
-          <button class="header-btn">Sign In</button>
-          <button class="header-btn">Register</button>
+          <button class="header-btn" @click="router.push({ name: 'login' })">
+            Sign In
+          </button>
+          <button class="header-btn" @click="router.push({ name: 'register' })">Register</button>
         </div>
       </div>
     </div>
@@ -49,8 +51,10 @@ import {
 } from '../constants.js'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
+const router = useRouter()
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
 
 const isLoggedIn = computed(() => store.state.isLoggedIn)

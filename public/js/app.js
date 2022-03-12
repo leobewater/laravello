@@ -21626,10 +21626,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/apollo-composable */ "./node_modules/@vue/apollo-composable/dist/index.esm.js");
 /* harmony import */ var _gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/queries/BoardWithListsAndCards.gql */ "./resources/js/gql/queries/BoardWithListsAndCards.gql");
 /* harmony import */ var _gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants.js */ "./resources/js/constants.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+
 
 
 
@@ -21642,6 +21644,7 @@ __webpack_require__.r(__webpack_exports__);
     var expose = _ref.expose;
     expose();
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_6__.useRouter)();
 
     var _useQuery = (0,_vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useQuery)((_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default()), {
       id: 1
@@ -21667,7 +21670,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (event.type) {
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_ADDED:
           // push new card to the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_7__["default"])(data, function (x) {
             x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
             }).cards.push(event.data);
@@ -21676,7 +21679,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_DELETED:
           // remove card from the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_7__["default"])(data, function (x) {
             // get cards from selcted list
             var listById = x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
@@ -21691,7 +21694,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_UPDATED:
           // update card from the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_7__["default"])(data, function (x) {
             var card = x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
             }).cards.filter(function (card) {
@@ -21709,6 +21712,7 @@ __webpack_require__.r(__webpack_exports__);
 
     var __returned__ = {
       store: store,
+      router: router,
       result: result,
       loading: loading,
       error: error,
@@ -21717,12 +21721,13 @@ __webpack_require__.r(__webpack_exports__);
       List: _components_List_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       useQuery: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useQuery,
       BoardQuery: (_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default()),
-      produce: immer__WEBPACK_IMPORTED_MODULE_6__["default"],
+      produce: immer__WEBPACK_IMPORTED_MODULE_7__["default"],
       EVENT_CARD_ADDED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_ADDED,
       EVENT_CARD_DELETED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_DELETED,
       EVENT_CARD_UPDATED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_UPDATED,
       computed: vue__WEBPACK_IMPORTED_MODULE_4__.computed,
-      useStore: vuex__WEBPACK_IMPORTED_MODULE_5__.useStore
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_5__.useStore,
+      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_6__.useRouter
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -22207,54 +22212,50 @@ var _hoisted_8 = [_hoisted_7];
 var _hoisted_9 = {
   key: 1
 };
-
-var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "header-btn"
-  }, "Sign In", -1
-  /* HOISTED */
-  );
-});
-
-var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "header-btn"
-  }, "Register", -1
-  /* HOISTED */
-  );
-});
-
-var _hoisted_12 = [_hoisted_10, _hoisted_11];
-var _hoisted_13 = {
+var _hoisted_10 = {
   "class": "h-full flex flex-1 flex-col items-stretch"
 };
-var _hoisted_14 = {
+var _hoisted_11 = {
   "class": "mx-4 mb-2 text-white font-bold text-lg"
 };
-var _hoisted_15 = {
+var _hoisted_12 = {
   key: 0
 };
-var _hoisted_16 = {
+var _hoisted_13 = {
   key: 1
 };
-var _hoisted_17 = {
+var _hoisted_14 = {
   key: 0,
   "class": "flex flex-1 items-start overflow-x-auto mx-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [$setup.isLoggedIn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, _hoisted_8)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, _hoisted_12))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [$setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15, "Loading")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.result.board.title), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [$setup.isLoggedIn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, _hoisted_8)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "header-btn",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $setup.router.push({
+        name: 'login'
+      });
+    })
+  }, " Sign In "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "header-btn",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $setup.router.push({
+        name: 'register'
+      });
+    })
+  }, "Register")]))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [$setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_12, "Loading")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.result.board.title), 1
   /* TEXT */
-  ))]), $setup.result ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.result.board.lists, function (list) {
+  ))]), $setup.result ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.result.board.lists, function (list) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["List"], {
       key: list.id,
       list: list,
-      onCardAdded: _cache[0] || (_cache[0] = function ($event) {
+      onCardAdded: _cache[2] || (_cache[2] = function ($event) {
         return $setup.updateQueryCache($event, $setup.result);
       }),
-      onCardUpdated: _cache[1] || (_cache[1] = function ($event) {
+      onCardUpdated: _cache[3] || (_cache[3] = function ($event) {
         return $setup.updateQueryCache($event, $setup.result);
       }),
-      onCardDeleted: _cache[2] || (_cache[2] = function ($event) {
+      onCardDeleted: _cache[4] || (_cache[4] = function ($event) {
         return $setup.updateQueryCache($event, $setup.result);
       })
     }, null, 8

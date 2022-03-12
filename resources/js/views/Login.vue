@@ -6,7 +6,7 @@
       </div>
 
       <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-        <Errors :errors ="error" />
+        <Errors :errors="error" />
 
         <div class="w-full text-center text-gray-600 font-bold mb-8">
           Sign in to Laravello
@@ -61,16 +61,18 @@ import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import Login from '../gql/mutations/Login.gql'
 import Errors from '../components/Errors.vue'
+import { useStore } from 'vuex'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const store = useStore()
 
 const {
   loading,
   error,
   mutate: login,
-  onDone
+  onDone,
 } = useMutation(Login, () => ({
   variables: {
     email: email.value,
@@ -79,6 +81,7 @@ const {
 }))
 
 onDone((result) => {
+  store.commit('setLoggedIn', true)
   router.push({ name: 'board' })
 })
 

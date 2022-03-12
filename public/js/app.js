@@ -21751,6 +21751,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/mutations/Login.gql */ "./resources/js/gql/mutations/Login.gql");
 /* harmony import */ var _gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Errors.vue */ "./resources/js/components/Errors.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
 
 
 
@@ -21763,6 +21765,7 @@ __webpack_require__.r(__webpack_exports__);
     var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter)();
     var email = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var password = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
 
     var _useMutation = (0,_vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation)((_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default()), function () {
       return {
@@ -21778,6 +21781,7 @@ __webpack_require__.r(__webpack_exports__);
         onDone = _useMutation.onDone;
 
     onDone(function (result) {
+      store.commit('setLoggedIn', true);
       router.push({
         name: 'board'
       });
@@ -21791,6 +21795,7 @@ __webpack_require__.r(__webpack_exports__);
       router: router,
       email: email,
       password: password,
+      store: store,
       loading: loading,
       error: error,
       login: login,
@@ -21800,7 +21805,8 @@ __webpack_require__.r(__webpack_exports__);
       useRouter: vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter,
       useMutation: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation,
       Login: (_gql_mutations_Login_gql__WEBPACK_IMPORTED_MODULE_2___default()),
-      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_5__.useStore
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -21829,6 +21835,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gql_mutations_Register_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/mutations/Register.gql */ "./resources/js/gql/mutations/Register.gql");
 /* harmony import */ var _gql_mutations_Register_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_mutations_Register_gql__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Errors.vue */ "./resources/js/components/Errors.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
 
 
 
@@ -21842,6 +21850,7 @@ __webpack_require__.r(__webpack_exports__);
     var email = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var fullname = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var password = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
 
     var _useMutation = (0,_vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation)((_gql_mutations_Register_gql__WEBPACK_IMPORTED_MODULE_2___default()), function () {
       return {
@@ -21858,6 +21867,7 @@ __webpack_require__.r(__webpack_exports__);
         onDone = _useMutation.onDone;
 
     onDone(function (result) {
+      store.commit('setIsLogged', true);
       router.push({
         name: 'board'
       });
@@ -21872,6 +21882,7 @@ __webpack_require__.r(__webpack_exports__);
       email: email,
       fullname: fullname,
       password: password,
+      store: store,
       loading: loading,
       error: error,
       register: register,
@@ -21881,7 +21892,8 @@ __webpack_require__.r(__webpack_exports__);
       useRouter: vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter,
       useMutation: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useMutation,
       Register: (_gql_mutations_Register_gql__WEBPACK_IMPORTED_MODULE_2___default()),
-      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+      Errors: _components_Errors_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_5__.useStore
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -22706,7 +22718,11 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_0__.createStore)({
   },
   getters: {},
   actions: {},
-  mutations: {},
+  mutations: {
+    setLoggedIn: function setLoggedIn(state, payload) {
+      state.isLoggedIn = Boolean(payload);
+    }
+  },
   modules: {}
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);

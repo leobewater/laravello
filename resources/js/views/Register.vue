@@ -6,7 +6,7 @@
       </div>
 
       <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-        <Errors :errors ="error" />
+        <Errors :errors="error" />
 
         <div class="w-full text-center text-gray-600 font-bold mb-8">
           Sign up an account
@@ -70,11 +70,13 @@ import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import Register from '../gql/mutations/Register.gql'
 import Errors from '../components/Errors.vue'
+import { useStore } from 'vuex'
 
 const router = useRouter()
 const email = ref('')
 const fullname = ref('')
 const password = ref('')
+const store = useStore()
 
 const {
   loading,
@@ -90,6 +92,7 @@ const {
 }))
 
 onDone((result) => {
+  store.commit('setIsLogged', true)
   router.push({ name: 'board' })
 })
 

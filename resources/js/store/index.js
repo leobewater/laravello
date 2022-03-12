@@ -2,11 +2,15 @@ import { createStore } from 'vuex'
 
 const store = createStore({
   state: {
-    isLoggedIn: false
+    isLoggedIn: false,
   },
   getters: {},
   actions: {},
-  mutations: {},
+  mutations: {
+    setLoggedIn(state, payload) {
+      state.isLoggedIn = Boolean(payload)
+    },
+  },
   modules: {},
 })
 

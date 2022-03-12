@@ -7,7 +7,7 @@
       <div class="text-lg opacity-50 cursor-pointer hover:opacity-75">
         Laravello
       </div>
-      <div class="mr-2 w-1/3 flex justify-end">x</div>
+      <div class="mr-2 w-1/3 flex justify-end">{{ isLoggedIn ? 'Logged In' : 'Not logged In'}}</div>
     </div>
 
     <div class="h-full flex flex-1 flex-col items-stretch">
@@ -39,8 +39,13 @@ import {
   EVENT_CARD_DELETED,
   EVENT_CARD_UPDATED,
 } from '../constants.js'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const { result, loading, error } = useQuery(BoardQuery, { id: 1 })
+
+const isLoggedIn = computed(() => store.state.isLoggedIn)
 
 function updateQueryCache(event, result) {
   // read the cached query
@@ -80,9 +85,10 @@ function updateQueryCache(event, result) {
     case EVENT_CARD_UPDATED:
       // update card from the list
       updatedData = produce(data, (x) => {
-        const card = x.board.lists
+        const card = (x.board.lists
           .find((itemList) => itemList.id === event.listId)
-          .cards.filter((card) => card.id === event.data.id).title = event.data.title
+          .cards.filter((card) => card.id === event.data.id).title =
+          event.data.title)
       })
       break
   }

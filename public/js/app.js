@@ -21626,8 +21626,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/apollo-composable */ "./node_modules/@vue/apollo-composable/dist/index.esm.js");
 /* harmony import */ var _gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gql/queries/BoardWithListsAndCards.gql */ "./resources/js/gql/queries/BoardWithListsAndCards.gql");
 /* harmony import */ var _gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants.js */ "./resources/js/constants.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
+
 
 
 
@@ -21637,6 +21641,7 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
 
     var _useQuery = (0,_vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useQuery)((_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default()), {
       id: 1
@@ -21644,6 +21649,10 @@ __webpack_require__.r(__webpack_exports__);
         result = _useQuery.result,
         loading = _useQuery.loading,
         error = _useQuery.error;
+
+    var isLoggedIn = (0,vue__WEBPACK_IMPORTED_MODULE_4__.computed)(function () {
+      return store.state.isLoggedIn;
+    });
 
     function updateQueryCache(event, result) {
       // read the cached query
@@ -21658,7 +21667,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (event.type) {
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_ADDED:
           // push new card to the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_4__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
             x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
             }).cards.push(event.data);
@@ -21667,7 +21676,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_DELETED:
           // remove card from the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_4__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
             // get cards from selcted list
             var listById = x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
@@ -21682,7 +21691,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_UPDATED:
           // update card from the list
-          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_4__["default"])(data, function (x) {
+          updatedData = (0,immer__WEBPACK_IMPORTED_MODULE_6__["default"])(data, function (x) {
             var card = x.board.lists.find(function (itemList) {
               return itemList.id === event.listId;
             }).cards.filter(function (card) {
@@ -21699,17 +21708,21 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     var __returned__ = {
+      store: store,
       result: result,
       loading: loading,
       error: error,
+      isLoggedIn: isLoggedIn,
       updateQueryCache: updateQueryCache,
       List: _components_List_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       useQuery: _vue_apollo_composable__WEBPACK_IMPORTED_MODULE_1__.useQuery,
       BoardQuery: (_gql_queries_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default()),
-      produce: immer__WEBPACK_IMPORTED_MODULE_4__["default"],
+      produce: immer__WEBPACK_IMPORTED_MODULE_6__["default"],
       EVENT_CARD_ADDED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_ADDED,
       EVENT_CARD_DELETED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_DELETED,
-      EVENT_CARD_UPDATED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_UPDATED
+      EVENT_CARD_UPDATED: _constants_js__WEBPACK_IMPORTED_MODULE_3__.EVENT_CARD_UPDATED,
+      computed: vue__WEBPACK_IMPORTED_MODULE_4__.computed,
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_5__.useStore
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -22143,41 +22156,51 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = {
   "class": "h-full flex flex-col items-stretch bg-purple-500"
 };
+var _hoisted_2 = {
+  "class": "header text-white flex justify-between items-center mb-2 bg-purple-600"
+};
 
-var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "header text-white flex justify-between items-center mb-2 bg-purple-600"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "ml-2 w-1/3"
-  }, "x"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "text-lg opacity-50 cursor-pointer hover:opacity-75"
-  }, " Laravello "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "mr-2 w-1/3 flex justify-end"
-  }, "x")], -1
+  }, "x", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_3 = {
-  "class": "h-full flex flex-1 flex-col items-stretch"
-};
-var _hoisted_4 = {
-  "class": "mx-4 mb-2 text-white font-bold text-lg"
-};
+var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "text-lg opacity-50 cursor-pointer hover:opacity-75"
+  }, " Laravello ", -1
+  /* HOISTED */
+  );
+});
+
 var _hoisted_5 = {
-  key: 0
+  "class": "mr-2 w-1/3 flex justify-end"
 };
 var _hoisted_6 = {
-  key: 1
+  "class": "h-full flex flex-1 flex-col items-stretch"
 };
 var _hoisted_7 = {
+  "class": "mx-4 mb-2 text-white font-bold text-lg"
+};
+var _hoisted_8 = {
+  key: 0
+};
+var _hoisted_9 = {
+  key: 1
+};
+var _hoisted_10 = {
   key: 0,
   "class": "flex flex-1 items-start overflow-x-auto mx-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, "Loading")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.result.board.title), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.isLoggedIn ? 'Logged In' : 'Not logged In'), 1
   /* TEXT */
-  ))]), $setup.result ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.result.board.lists, function (list) {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8, "Loading")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.result.board.title), 1
+  /* TEXT */
+  ))]), $setup.result ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.result.board.lists, function (list) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["List"], {
       key: list.id,
       list: list,
@@ -22678,7 +22701,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 
 var store = (0,vuex__WEBPACK_IMPORTED_MODULE_0__.createStore)({
-  state: {},
+  state: {
+    isLoggedIn: false
+  },
   getters: {},
   actions: {},
   mutations: {},

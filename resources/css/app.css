@@ -10,3 +10,19 @@ body {
 #app {
   height: 100vh;
 }
+
+@layer components {
+  .header-btn {
+    background-color: hsla(0, 0%, 100%, 0.3);
+    @apply rounded-sm px-2 py-1 text-sm font-bold outline-none whitespace-nowrap ml-2;
+  }
+  
+  .header-btn:focus {
+    @apply outline-none;
+  }
+  
+  .header-btn:hover {
+    @apply opacity-75;
+  }
+  
+}

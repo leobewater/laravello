@@ -7,7 +7,15 @@
       <div class="text-lg opacity-50 cursor-pointer hover:opacity-75">
         Laravello
       </div>
-      <div class="mr-2 w-1/3 flex justify-end">{{ isLoggedIn ? 'Logged In' : 'Not logged In'}}</div>
+      <div class="mr-2 w-1/3 flex justify-end">
+        <div v-if="isLoggedIn">
+          <button class="header-btn">Logout</button>
+        </div>
+        <div v-else>
+          <button class="header-btn">Sign In</button>
+          <button class="header-btn">Register</button>
+        </div>
+      </div>
     </div>
 
     <div class="h-full flex flex-1 flex-col items-stretch">
